@@ -1,42 +1,37 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService) {}
 
-  // Get all category (protected)
-  @UseGuards(JwtAuthGuard)
   @Get()
-  async getAll() {
-    return this.ordersService.getAll();
+  async findAll() {
+    return this.ordersService.getAllorders();
   }
 
-  // Get single category by id (protected)
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getOne(@Param('id') id: string) {
-    return this.ordersService.findById(+id);
+  async findOne(@Param('id') id: string) {
+    return this.ordersService.getordersById(+id);
   }
 
-  // Create category (open - for demo)
   @Post()
-  async create(@Body() body: { orders_id: string; orders_date: string; }) {
-    return this.ordersService.createOrders(body.orders_id, body.orders_date, );
+  async create(@Body() body: any) {
+    return this.ordersService.createOrders(body.orders_quality, body.orders_name);
   }
 
-  // Update category (protected)
-  @UseGuards(JwtAuthGuard)
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() body: any) {
-    return this.ordersService.updateOrders(+id, body);
+  @Post('register')
+  async register(@Body() body: any) {
+    return this.ordersService.createOrders(body.orders_quality, body.orders_name);
   }
 
-  // Delete category (protected)
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.ordersService.deleteOrders(+id);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() body: any) {
+    return this.ordersService.updateOrders(+id, body);
   }
 }

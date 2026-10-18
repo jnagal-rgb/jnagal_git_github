@@ -1,16 +1,24 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { OrdersService } from './orders.service';
+import { JwtModule } from '@nestjs/jwt';
 import { OrdersController } from './orders.controller';
-import { DatabaseModule } from '../database/database.module';
+import { OrdersService } from './orders.service';
+import { UsersModule } from '../users/users.module';
+import { JwtStrategy } from '../auth/jwt-strategy';
 
 @Module({
   imports: [
-    DatabaseModule,
+    UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET || 'access_secret',
+      signOptions: {
+        expiresIn: (process.env.ACCESS_TOKEN_EXPIRES_IN || '900s') as any,
+      },
+    }),
   ],
   controllers: [OrdersController],
-  providers: [OrdersService],
+  providers: [OrdersService, JwtStrategy],
   exports: [OrdersService],
 })
-export class OrdersModule {}
+export class SuppliersModule {}
