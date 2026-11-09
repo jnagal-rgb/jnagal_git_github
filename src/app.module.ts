@@ -7,7 +7,13 @@ import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
 
 @Module({
-imports: [ProductsModule, OrdersModule, SuppliersModule, DatabaseModule, UsersModule, AuthModule],
+imports: [
+    SuppliersModule,
+    DatabaseModule,
+    UsersModule,
+    ProductsModule, 
+    OrdersModule,  
+    AuthModule],
 })
 
 export class AppModule {}
