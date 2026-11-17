@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { RowDataPacket, OkPacket } from 'mysql2';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class SuppliersService {
@@ -49,11 +48,11 @@ async updateSuppliers(id: number, data: {
     const fields: string[] = [];
     const values: any[] = [];
 
-    if (data.type_name) {
+    if (data.type_name !== undefined) {
         fields.push('type_name = ?');
         values.push(data.type_name);
     }
-    if (data.type_address) {
+    if (data.type_address !== undefined) {
         fields.push('type_address = ?');
         values.push(data.type_address);
     }
